@@ -23,7 +23,7 @@ public class ProductsController {
     @Autowired
     ProductsService productsService;
 
-    @GetMapping("/")
+    @GetMapping("/get")
     public ArrayList<ProductsModel> getProducts() {
         return productsService.getProducts();
     }
