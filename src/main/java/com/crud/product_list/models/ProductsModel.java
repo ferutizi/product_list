@@ -17,8 +17,8 @@ public class ProductsModel {
     private Long id;
 
     private String name;
-    private Number price;
-    private Number stock;
+    private Float price;
+    private Integer stock;
 
     public Long getId() {
         return id;
@@ -40,7 +40,7 @@ public class ProductsModel {
         return price;
     }
 
-    public void setPrice(Number price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -48,7 +48,7 @@ public class ProductsModel {
         return stock;
     }
 
-    public void setStock(Number stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 }
