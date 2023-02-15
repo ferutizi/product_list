@@ -13,33 +13,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.product_list.models.ProductsModel;
-import com.crud.product_list.services.ProductsService;
+import com.crud.product_list.models.ProductModel;
+import com.crud.product_list.services.ProductService;
 
 @RestController
 @RequestMapping(value = "/", method={RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
-public class ProductsController {
+public class ProductController {
     @Autowired
-    ProductsService productsService;
+    ProductService productService;
 
     @GetMapping("/get")
-    public ArrayList<ProductsModel> getProducts() {
-        return productsService.getProducts();
+    public ArrayList<ProductModel> getProducts() {
+        return productService.getProducts();
     }
 
     @PostMapping(value = "/save", consumes = {"application/json"})
-    public ProductsModel setProduct(@RequestBody ProductsModel product) {
-        return this.productsService.setProduct(product);
+    public ProductModel setProduct(@RequestBody ProductModel product) {
+        return this.productService.setProduct(product);
     }
 
     @DeleteMapping(value = "/{id}")
     public void deleteProduct(@PathVariable("id") Long id) {
-        productsService.deleteProduct(id);
+        productService.deleteProduct(id);
     }
 
     @DeleteMapping(value = "/delete")
     public void deleteAllProducts() {
-        productsService.deleteAllProducts();
+        productService.deleteAllProducts();
     }
 }
