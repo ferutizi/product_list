@@ -1,16 +1,13 @@
 package com.crud.product_list.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Ssl;
-import org.springframework.data.jdbc.support.JdbcUtil;
-import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.stereotype.Service;
-import org.aspectj.internal.lang.annotation.ajcDeclareSoft;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -61,23 +58,24 @@ public class ProductService {
         }
     }
 
-    public Optional<ProductModel> getByPrice(int min, int max) {
+    public List<ProductModel> getByPrice(int min, int max) {
         SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml")
         .addAnnotatedClass(ProductModel.class).buildSessionFactory();
 
         Session session = sessionFactory.openSession();
-        /* CriteriaBuilder builder = entityManager.getCriteriaBuilder(); */
-
-       /*  Criteria cr = Session.createCriteria();
-        EntityManager em = JdbcUtil.createEntityManager(this.getEntityManagerFactory());
-        cr.add(Restriction.between("price", min, max)) */
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.crud.product_list.models");
         EntityManager entityManager = emf.createEntityManager();
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<String> criteria = builder.createQuery(String.class);
+        CriteriaQuery<ProductModel> criteria = builder.createQuery(ProductModel.class);
         Root<ProductModel> root = criteria.from(ProductModel.class);
-        criteria.select(root.get(Person_.nickName));
-        criteria.where(builder.equal(root.get(Person_.name), "John Doe"));
+        criteria.select(root);
+
+        criteria.where(builder.between(root.get("price"), 10, 20));
+        List<ProductModel> products = entityManager.createQuery(criteria).getResultList();
+
+        entityManager.close();
+        session.close();
+        return products;
     }
 }
